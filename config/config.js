@@ -37,7 +37,7 @@ var config = {
       name: 'express-tc'
     },
     port: 3000,
-    db: 'mongodb://localhost/express-tc-production',
+    db: 'mongodb://theone:theone12138@localhost/theblog',
     debug : false
   }
 };
