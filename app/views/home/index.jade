@@ -1,0 +1,13 @@
+extends layout
+
+
+block middelContext
+  .header-placeholder
+  div(ui-view='banner')
+  .middel-relative
+    .container
+      .main(class='{{pageClass}}',ui-view='bodyer')
+  div(ng-class='{overlay:view.scrollLeft}',ng-swipe-right='view.scrollLeft = false')
+
+block rightSider
+  div.visible-xs(ui-view='mobileRight')

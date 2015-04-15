@@ -1,0 +1,66 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='UTF-8')
+    meta(name='viewport', content='width=device-width')
+    title= title
+
+    link(rel='stylesheet', href='/public/css/admin/theoneAdmin.791b64d8.css')
+
+    block js
+
+    script(src='/public/tinymce/tinymce.min.2723ce7a.js')
+    
+    script(src='/public/scripts/admin/base.9002b26a.js')
+
+
+  body(ng-app='theoneApp')
+    block content
+        //- nav small
+
+        //- nav main
+        nav.navbar.navbar-default.navbar-fixed-top(role='navigation')
+            .container
+                .row
+                    .col-lg-12
+                        .navbar-header
+                            a.navbar-brand theOne Blog
+                        .collapse.navbar-collapse.main-navbar-collapse
+                            ul.nav.navbar-nav
+                                li.active
+                                    a(href="/admin") TheBlog
+                                li
+                                    a(href="/admin/user")=user.name
+                                li
+                                    a(href="") link
+        //- 中心
+        .container
+            .row
+                block contentleft
+                    .col-md-3.bootstrap-admin-col-left
+                        ul.nav.navbar-collapse.bootstrap-admin-navbar-side
+                            li.active
+                                a(href="#/")
+                                    i.glyphicon.glyphicon-dashboard
+                                    |  仪表盘
+                            li
+                                a(href="#/cate") 类别
+                            li
+                                a(href="#/article") 文章列表
+                            li
+                                a(href='#/article/add') 发布文章
+                            li
+                                a(href='#/tag') 标签列表
+                block contentright
+                    div(ui-view)
+    //- footer
+    .navbar.navbar-footer
+        .container
+            .row
+                .col-lg-12
+                    footer(role='conteninfo')
+                        p.left theone博客后台
+                        p.right &copy; 2015
+    block footerjs
+        //- angular 
+        script(src='/angular/scripts/admin/adminIndex.a833ac6e.js')
