@@ -11,6 +11,8 @@ var compress = require('compression');
 var methodOverride = require('method-override');
 var mongoose = require('mongoose');
 
+// sessionMongodbUrl
+
 var multer = require('multer');
 
 module.exports = function(app, config) {
@@ -26,7 +28,7 @@ module.exports = function(app, config) {
   app.use(cookieParser());
 
   app.use(compress());
-  app.use('/public', express.static(config.root + '/public'));
+  app.use(express.static(config.root + '/public'));
   app.use('/data',express.static(config.root + '/data'));
   app.use('/angular',express.static(config.root+ '/angular'));
   app.use(methodOverride());
