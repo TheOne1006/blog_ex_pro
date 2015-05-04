@@ -14,6 +14,7 @@ var mongoose = require('mongoose');
 var MongoStore = require('connect-mongo')(session);
 
 var multer = require('multer');
+var fs = require('fs');
 
 module.exports = function(app, config) {
   app.set('views', config.root + '/app/views');
@@ -28,7 +29,7 @@ module.exports = function(app, config) {
   app.use(cookieParser());
 
   app.use(compress());
-  app.use('/public',express.static(config.root + '/public'));
+  app.use(express.static(config.root + '/public'));
   app.use('/data',express.static(config.root + '/data'));
   app.use('/angular',express.static(config.root+ '/angular'));
   app.use(methodOverride());
@@ -37,12 +38,39 @@ module.exports = function(app, config) {
   app.use(multer({
     onFileUploadStart: function (file, req) {
       // 特殊路径才能直接上传
-      if (req.url !=='/admin/login/verify/face'){
-        return false;
-      }
+      // if (req.url !=='/admin/login/verify/face'){
+      //   return false;
+      // }
+      return true;
     },
-    dest: config.root+'/data/tmp/',
-    inMemory: true //放入 buffer 中, 不存入文件
+    // dest: config.root+'/data/tmp/',
+    // inMemory: true //放入 buffer 中, 不存入文件
+    rename: function () {
+      return Date.now()+ Math.floor(Math.random()*1000);
+    },
+    changeDest: function(dest, req) {
+      var stat = null,
+      reutrnDest = null,
+      initDest = config.root+'/data/tmp/';
+
+      if(req.url.indexOf('carousel') !== -1 ){
+        reutrnDest = config.root+'/data/carousel/';
+      }
+
+      if(reutrnDest){
+        try {
+            stat = fs.statSync(reutrnDest);
+        } catch(err) {
+            fs.mkdirSync(reutrnDest);
+        }
+      }
+
+      if (stat && !stat.isDirectory()) {
+          throw new Error('Directory cannot be created because an inode of a different type exists at "' + reutrnDest + '"');
+      }
+
+      return reutrnDest || initDest;
+    }
   }));
   
     // session
@@ -64,7 +92,7 @@ module.exports = function(app, config) {
 
   // 单独提出 router
   routers.forEach(function (router) {
-    require(router)(app);
+    require(router)(app, config);
   });
 
   app.use(function (req, res, next) {
