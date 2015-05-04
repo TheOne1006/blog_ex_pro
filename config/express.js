@@ -29,9 +29,9 @@ module.exports = function(app, config) {
   app.use(cookieParser());
 
   app.use(compress());
-  app.use(express.static(config.root + '/public'));
-  app.use('/data',express.static(config.root + '/data'));
-  app.use('/angular',express.static(config.root+ '/angular'));
+  // app.use(express.static(config.root + '/public'));
+  // app.use('/data',express.static(config.root + '/data'));
+  // app.use('/angular',express.static(config.root+ '/angular'));
   app.use(methodOverride());
 
   // 文件上传 中间件
