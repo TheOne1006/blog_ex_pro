@@ -51,7 +51,7 @@ exports.verify = {
           function (cb) {
             //- 测试
             // help.facePlusPlusDetect('http://res.cloudinary.com/theone/image/upload/v1425302230/mavjc53omfyfnngyjebw.jpg', cb);
-
+            console.log('http://www.theone.io/data/tmp/'+img.name);
             //- theone.io
             help.facePlusPlusDetect('http://www.theone.io/data/tmp/'+img.name , cb);
           },
@@ -90,15 +90,14 @@ exports.verify = {
                 }
               }
             }
-
             cb();
           }
           ],function (err) {
           if(err){
-            console.log(err);
-            return next(err);
+            res.json({is_login:false});
+          }else{
+            res.json({is_login:true});
           }
-          res.json({is_login:true});
           res.end();
         });
 
