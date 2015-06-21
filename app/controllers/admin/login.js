@@ -64,7 +64,7 @@ exports.verify = {
           function  (result ,cb) {
             console.log(result);
             // 返回对比差异
-            if (result.confidence > 80 && result.is_same_person ) {
+            if (result.confidence > 50 && result.is_same_person ) {
               req.session.userId = '54ede26288d1cb84097a886e';
               cb();
             } else { 
