@@ -50,10 +50,10 @@ exports.verify = {
         async.waterfall([
           function (cb) {
             //- 测试
-            help.facePlusPlusDetect('http://res.cloudinary.com/theone/image/upload/v1425302230/mavjc53omfyfnngyjebw.jpg', cb);
+            // help.facePlusPlusDetect('http://res.cloudinary.com/theone/image/upload/v1425302230/mavjc53omfyfnngyjebw.jpg', cb);
 
             //- theone.io
-            // help.facePlusPlusDetect('http://www.theone.io/data/tmp/'+img.name , cb);
+            help.facePlusPlusDetect('http://www.theone.io/data/tmp/'+img.name , cb);
           },
           function (detectInfo, cb) {
             if(!detectInfo || !detectInfo.face || !detectInfo.face[0] ||!detectInfo.face[0].face_id){
