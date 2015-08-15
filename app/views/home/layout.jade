@@ -10,12 +10,12 @@ html(lang='zh-CN',ng-app='theOneBlog')
       meta(content='telephone=no',name='format-detection')
       meta(content='email=no',name='format-detection')
       meta(name='Author',content='theone')
-
+      base(href='/')
       link(rel='stylesheet',href='/public/css/home/theoneBlog.a631f8c5.css')
 
 
 
-      script(src='/public/scripts/home/base.e267b492.js')
+      script(src='/public/scripts/home/base.7ef563d4.js')
     
     body(ng-controller='MainCtrl',ui-view='main',ng-class='{"no-scroll":view.scrollLeft}')
       header#header.navbar.navbar-default.navbar-fixed-top(ui-view='header',headroom,offset='201',classes="{pinned:'fadeInDownH',unpinned:'fadeOutUpH',initial:'animated'}",ng-class='{"header-activate":!view.scrollLeft,"fadeInDownH":view.scrollLeft}')
@@ -39,4 +39,4 @@ html(lang='zh-CN',ng-app='theOneBlog')
 
     //- angular
     block angular
-      script(src='/angular/scripts/home/ngTheone.1f3f7855.js')
+      script(src='/angular/scripts/home/ngTheone.4295b557.js')
