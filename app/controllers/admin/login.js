@@ -98,12 +98,12 @@ exports.verify = {
             cb();
           }
 */
-          ],function (err) {
+          ],function (err, result) {
           if(err){
             console.log(err);
             return next(err);
           }
-          res.json({is_login:true});
+          res.json(result);
           res.end();
         });
 
