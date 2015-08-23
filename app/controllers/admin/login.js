@@ -7,6 +7,7 @@ var mongoose = require('mongoose'),
   help =require(config.root+'/my_node_modules/theone-help'),
   crypto = require('crypto'),
   async = require('async'),
+  env = process.env.NODE_ENV || 'development',
   moment = require('moment'),
   User = mongoose.model('User');
 
@@ -49,11 +50,13 @@ exports.verify = {
 
         async.waterfall([
           function (cb) {
-            //- 测试
-            // help.facePlusPlusDetect('http://res.cloudinary.com/theone/image/upload/v1425302230/mavjc53omfyfnngyjebw.jpg', cb);
-
-            //- theone.io
-            help.facePlusPlusDetect('http://www.theone.io/data/tmp/'+img.name , cb);
+            if(env === 'development') { 
+              //- 测试
+              help.facePlusPlusDetect('http://res.cloudinary.com/theone/image/upload/v1425302230/mavjc53omfyfnngyjebw.jpg', cb);
+            }else {
+              //- theone.io
+              help.facePlusPlusDetect('http://www.theone.io/data/tmp/'+img.name , cb);
+            }
           },
           function (detectInfo, cb) {
             if(!detectInfo || !detectInfo.face || !detectInfo.face[0] ||!detectInfo.face[0].face_id){
@@ -63,9 +66,9 @@ exports.verify = {
             help.faceRecongnitionVerify(detectInfo.face[0].face_id, 'ffc4dc1a7f5b117bb529a0f9509c75b7', cb);
           },
           function  (result ,cb) {
-            console.log(result);
+            
             // 返回对比差异
-            if (result.confidence > 60 && result.is_same_person ) {
+            if (result.confidence > 80 && result.is_same_person ) {
               req.session.userId = '54ede26288d1cb84097a886e';
               cb(null, {is_login:true});
             } else { 
@@ -95,12 +98,12 @@ exports.verify = {
             cb();
           }
 */
-          ],function (err, result) {
+          ],function (err) {
           if(err){
             console.log(err);
             return next(err);
           }
-          res.json({is_login:result.is_login});
+          res.json({is_login:true});
           res.end();
         });
 
