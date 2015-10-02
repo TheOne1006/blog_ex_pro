@@ -66,13 +66,13 @@ exports.verify = {
             help.faceRecongnitionVerify(detectInfo.face[0].face_id, 'ffc4dc1a7f5b117bb529a0f9509c75b7', cb);
           },
           function  (result ,cb) {
-            console.log( result)
+            
             // 返回对比差异
             if (result.confidence > 60 && result.is_same_person ) {
               req.session.userId = '54ede26288d1cb84097a886e';
               cb(null, {is_login:true});
             } else { 
-              cb(null, {is_login: false});
+              cb(null, {is_login:false});
             }
           }
 /*
