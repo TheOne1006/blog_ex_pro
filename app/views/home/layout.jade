@@ -14,17 +14,18 @@ html(lang='zh-CN',ng-app='theOneBlog')
       meta(content='email=no',name='format-detection')
       meta(name='Author',content='theone')
       //- base(href='/')
-      link(rel='stylesheet',href='/public/css/home/theoneBlog.1c41f465.css')
+      link(rel='stylesheet',href='/public/css/home/theoneBlog.393737a5.css')
 
 
 
-      script(src='/public/scripts/home/base.937170d8.js')
+      script(src='/public/scripts/home/base.55d38aa6.js')
 
-    body(ng-controller='MainCtrl',ui-view='main',ng-class='{"no-scroll":view.scrollLeft}')
-      header#header.navbar.navbar-default.navbar-fixed-top(ui-view='header',headroom,offset='201',classes="{pinned:'fadeInDownH',unpinned:'fadeOutUpH',initial:'animated'}",ng-class='{"header-activate":!view.scrollLeft,"fadeInDownH":view.scrollLeft}')
-      div#leftSider.translate-side
+      //- angular
+      script(src='/angular/scripts/home/ngTheone.72d1b5b2.js')
 
-      div#middelContext.translate-side(ng-class='{"scroll-left":view.scrollLeft}')
+    body(ng-controller='MainCtrl',ui-view='main')
+      header#header.navbar.navbar-default.navbar-fixed-top(ui-view='header')
+      div#middelContext
         block middelContext
 
 
@@ -39,9 +40,4 @@ html(lang='zh-CN',ng-app='theOneBlog')
                                 a(href='http://self.theone.io',title='个人简介') About me
                               p.text-right &copy; 2015 TheOne.io 版权所有 ICP证：闽ICP备14001334号-2
 
-      div#rightSider.affix.mobile-right(ng-class='{"mobile-right-scroll":view.scrollLeft}')
-        block rightSider
 
-    //- angular
-    block angular
-      script(src='/angular/scripts/home/ngTheone.64cc0086.js')
