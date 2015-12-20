@@ -6,6 +6,7 @@
 var mongoose = require('mongoose'),
   Schema = mongoose.Schema,
   ObjectId = Schema.Types.ObjectId,
+  // Mixed = Schema.Types.Mixed,
   moment = require('moment');
 
 
@@ -33,7 +34,9 @@ var ArticleSchema = new Schema({
   author:{type: ObjectId, required: true, ref: 'User'},
   cate:{type: ObjectId, required: true, ref: 'Cate'},
   type:{type: String, default:'html'},
+  thumbnail:{type: String},
   keyWords:{type: Array, default:[]},
+  descript:{type: String, default:''},
   contentText:{type:String},
   content:{type:String, required:true},
   updateTime:{type:String}
