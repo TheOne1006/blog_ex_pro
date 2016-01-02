@@ -21,23 +21,6 @@ html(lang='zh-CN',ng-app='theOneBlog')
       script(src='/public/scripts/home/base.55d38aa6.js')
 
       //- angular
-      script(src='/angular/scripts/home/ngTheone.333e8664.js')
+      script(src='/angular/scripts/home/ngTheone.8d0fa3b9.js')
 
-    body(ng-controller='MainCtrl',ui-view='main')
-      header#header.navbar.navbar-default.navbar-fixed-top(ui-view='header')
-      div#middelContext
-        block middelContext
-
-
-        block footer
-          .navbar.navbar-footer
-              hr
-              .container
-                  .row
-                      .col-lg-12
-                          footer(role='conteninfo')
-                              p.text-left TheOne个人笔记本
-                                a(href='http://self.theone.io',title='个人简介') About me
-                              p.text-right &copy; 2015 TheOne.io 版权所有 ICP证：闽ICP备14001334号-2
-
-
+    body(ui-view)
