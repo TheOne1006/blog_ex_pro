@@ -13,6 +13,32 @@ var mongoose = require('mongoose'),
 
   _.extend(exports, publicArticle);
 
+
+exports.allList = function (req, res, next) {
+
+  var limit = req.query.limit || req.body.limit || 10,
+    page = req.query.page || req.body.page || 1,
+    keyword = req.query.keyword || req.body.keyword || '',
+    cate = req.query.cate || req.body.cate || '',
+    options = {
+      limit: limit,
+      page: page,
+      keyword: keyword,
+      cate: cate
+    };
+
+  Article
+    .list( options , false, function (err, results) {
+      if(err) {
+        return next(err);
+      }
+      res.json(results);
+      res.end();
+    });
+
+};
+
+
 // 文章列表
 exports.list = function (req, res, next) {
   var pageSize = (req.body && req.body.pageSize)? req.body.pageSize : 10,
@@ -65,6 +91,8 @@ exports.add = function (req, res ,next) {
     // 验证
     var newArticle = new Article(req.body.article);
 
+    // console.log(req.body.article);
+
     // 获取 作者
     var authorId = req.session.userId;
     newArticle.author = authorId;
@@ -77,15 +105,13 @@ exports.add = function (req, res ,next) {
           }
           cb(null, article._id);
         });
-      },
-      function (articleId, cb) {
-        Tag.articlePushTag(newArticle.keyWords, articleId, cb);
       }
       ],function (err) {
       if(err){
+        res.state(400);
         return next(err);
       }
-      res.end('is_add');
+      res.end({'result':false});
     });
 
   };
@@ -93,56 +119,21 @@ exports.add = function (req, res ,next) {
 // 更新
 exports.edit = function (req, res, next) {
   var editArticle = req.body.article;
-  var modifArticle;
-  var delTagArr = []; // del keywords
-  var addTagArr = []; // append new keywords
+  var _id = req.param('id');
 
-  async.waterfall([
-      // 获取原始对象
-      function  (cb) {
-        Article.findById(editArticle._id,cb);
+  if(editArticle._id) {
+    delete editArticle._id;
+  }
 
-        // get difference keywords
-      },function (oriArticle, cb) {
-        delTagArr = _.difference(oriArticle.keyWords, editArticle.keyWords);
-        addTagArr = _.difference(editArticle.keyWords, oriArticle.keyWords);
 
-        modifArticle = oriArticle;
-
-        cb();
-        // 删除 Tag 记录
-      },function (cb) {
-        if(delTagArr.length === 0){
-          return cb();
-        }
-
-        Tag.articleUnlinkTag(delTagArr, editArticle._id, cb);
-
-        // 添加新增记录
-      },function (cb) {
-        if(addTagArr.length === 0){
-          return cb();
-        }
-
-        Tag.articlePushTag(addTagArr, editArticle._id, cb);
-
-        // 清除多余tag doc
-      },function (cb) {
-        Tag.removeCountZero(cb);
-
-        // 更新自己
-      },function (cb) {
-        // save update  外 ref 只要 string 就可以
-        _.extend(modifArticle, editArticle);
-        modifArticle.save(cb);
+  Article
+    .update({_id: _id}, {$set: editArticle}, function (err, result) {
+      if(err) {
+        return next(err)
       }
-
-    ],function (err) {
-      if(err){
-        return next(err);
-      }
-      res.end('edit_ok');
-    });
+      res.json({result:'ok'})
+      res.end();
+    })
 
 };
 
@@ -198,7 +189,8 @@ exports.delById = function (req, res, next) {
     if(err){
       return next(err);
     }
-    res.end('ok');
+    res.json({result:'ok'});
+    res.end();
   });
 };
 

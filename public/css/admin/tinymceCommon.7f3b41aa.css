@@ -1,0 +1,17 @@
+pre.prettyprint {border:1px solid #888}
+pre.prettyprint:before {
+  content:'Prettyprint:';
+}
+
+tabset, tabset tab {
+  display: block;
+}
+tabset {
+  border: 1px solid blue;
+}
+tabset:before {
+  content: 'Tabset:'
+}
+tabset tab:before {
+    content:'Tab>';
+}

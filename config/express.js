@@ -26,10 +26,10 @@ module.exports = function(app, config) {
   }));
   app.use(cookieParser());
 
-  if(app.get('env') === 'production') {
+  // if(app.get('env') === 'production') {
     // prerender
     app.use(require('prerender-node').set('prerenderServiceUrl', config.prerenderUrl));
-  }
+  // }
 
   app.use(compress());
 
@@ -90,6 +90,18 @@ module.exports = function(app, config) {
     require(router)(app, config);
   });
 
+  if(app.get('env') !== 'development'){
+    app.use('/admin',function (req, res) {
+      res.sendFile(config.root + '/angular/views/admin/index.html');
+    });
+
+    app.use(function (req, res) {
+      res.sendFile(config.root + '/angular/views/home/index.html');
+    });
+  }
+
+
+
   app.use(function (req, res, next) {
     var err = new Error('Not Found');
     err.status = 404;
@@ -98,7 +110,7 @@ module.exports = function(app, config) {
 
   if(app.get('env') === 'development'){
     mongoose.set('debug', config.debug);
-    app.use(function (err, req, res, next) {
+    app.use(function (err, req, res) {
       res.status(err.status || 500);
       res.render('error', {
         message: err.message,
@@ -108,7 +120,7 @@ module.exports = function(app, config) {
     });
   }
 
-  app.use(function (err, req, res, next) {
+  app.use(function (err, req, res) {
     res.status(err.status || 500);
       res.render('error', {
         message: err.message,
