@@ -25,7 +25,8 @@ var pictureCtrl = controllers.picture;
     // 后台登录
     app.get('/admin/login', adminLoginCtrl.index);
     app.post('/admin/login/verify/password', adminLoginCtrl.verify.password);
-    app.post('/admin/login/verify/face', adminLoginCtrl.verify.face);
+    // 测试取消
+    // app.post('/admin/login/verify/face', adminLoginCtrl.verify.face);
 
     // 后台
     app.use('/admin',adminCtrl.checkSession);

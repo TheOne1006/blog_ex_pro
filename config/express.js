@@ -17,8 +17,8 @@ var MongoStore = require('connect-mongo')(session);
 // var fs = require('fs');
 
 module.exports = function(app, config) {
-  app.set('views', config.root + '/app/views');
-  app.set('view engine', 'jade');
+  // app.set('views', config.root + '/app/views');
+  // app.set('view engine', 'jade');
 
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({
@@ -28,14 +28,14 @@ module.exports = function(app, config) {
 
   // if(app.get('env') === 'production') {
     // prerender
-    // app.use(require('prerender-node').set('prerenderServiceUrl', config.prerenderUrl));
+   // app.use(require('prerender-node').set('prerenderServiceUrl', config.prerenderUrl));
   // }
 
   app.use(compress());
 
   // 开发模式下使用，生产环境下ngnix 配置
-  app.use(logger('dev'));
-  if(app.get('env') === 'development') {
+  if(app.get('env') === 'development'){
+    app.use(logger('dev'));
     app.use(favicon(config.root + '/public/img/favicon.ico'));
     app.use(express.static(config.root + '/public'));
     app.use('/public',express.static(config.root + '/public'));
@@ -45,7 +45,28 @@ module.exports = function(app, config) {
 
   app.use(methodOverride());
 
-  // session
+  // 判断reffer,执行重定向 (是否可以移动到 /app/routes/routerHome.js ?)
+  // app.use(function(req, res, next){
+  //   var urlArr = req.url.split('/'),
+  //   argUrlPart = urlArr[1] || '',
+  //   needRedirect = false;
+
+  //   if(argUrlPart === 'article' || argUrlPart === 'cate' || argUrlPart === 'search') {
+  //     needRedirect = true;
+  //   }
+
+
+  //   if(needRedirect) {
+  //       console.log('log-- redierct');
+  //       res.redirect('/#'+req.url);
+  //       return;
+  //   }
+
+  //   next();
+  // });
+
+
+    // session
   app.use(session({
        secret: 'theone12138',
        // secure 关闭安全 secure
@@ -69,13 +90,15 @@ module.exports = function(app, config) {
     require(router)(app, config);
   });
 
-  if(app.get('env') !== 'development') {
+  if(app.get('env') === 'development'){
     app.use('/admin',function (req, res) {
       res.sendFile(config.root + '/angular/views/admin/index.html');
+      res.end();
     });
 
-    app.use(function (req, res) {
+    app.use('/', function (req, res) {
       res.sendFile(config.root + '/angular/views/home/index.html');
+      res.end();
     });
   }
 
@@ -87,18 +110,14 @@ module.exports = function(app, config) {
     next(err);
   });
 
-  if(app.get('env') === 'development'){
-    mongoose.set('debug', config.debug);
-    app.use(function (err, req, res) {
-      res.status(err.status || 500);
-      res.write(err.toString());
-      res.end();
-    });
-  }
+  mongoose.set('debug', config.debug);
+
 
   app.use(function (err, req, res) {
-    res.status(err.status || 500);
-    res.write(err.toString());
+    if(err) {
+      res.status(err.status || 500);
+      res.json(err);
+    }
     res.end();
   });
 
