@@ -25,14 +25,17 @@ var pictureCtrl = controllers.picture;
     // 后台登录
     app.get('/admin/login', adminLoginCtrl.index);
     app.post('/admin/login/verify/password', adminLoginCtrl.verify.password);
-    // 测试取消
-    // app.post('/admin/login/verify/face', adminLoginCtrl.verify.face);
+    app.post('/admin/login/verify/face', adminLoginCtrl.verify.face);
 
     // 后台
     app.use('/admin',adminCtrl.checkSession);
-    app.get('/admin', function (req, res) {
-      res.sendFile(config.root + '/angular/views/admin/index.html');
-      res.end();
+    app.get('/admin', function (req, res, next) {
+      res.sendFile(config.root + '/angular/views/admin/index.html', {}, function (err) {
+        if(err) {
+          return next(err)
+        }
+        res.end();
+      });
     });
 
     // 后台文章
